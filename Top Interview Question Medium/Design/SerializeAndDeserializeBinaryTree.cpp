@@ -20,8 +20,7 @@ public:
 	    }
 	
 	    TreeNode* root = new TreeNode(stoi(token));
-	    root->left = preorderDeserialise(ss, data);
-	    root->right = preorderDeserialise(ss, data);
+	    root->left = preorderDeserialise(ss);
 	    root->right = preorderDeserialise(ss);
 	    return root;
     }
