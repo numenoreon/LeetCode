@@ -1,24 +1,24 @@
 class Solution {
 public:
-    vector<int> productExceptSelf(vector<int>& nums) {
-        int counter = count(nums.begin(),nums.end(),0);
-        if(counter>1)
-            return vector <int> (nums.size(),0);
-        else if(counter==1){
-        	auto it = find(nums.begin(),nums.end(),0);
-        	if(it!=nums.end()){
-            		int product1=std::accumulate(nums.begin(), it, 1, std::multiplies<int>());
-            		int product2=std::accumulate(it+1, nums.end(), 1, std::multiplies<int>());
-            		vector <int> result (nums.size(),0);
-            		result[it-nums.begin()]=product1*product2;
-            		return result;
-        	}
+    vector<int> productExceptSelf(vector<int>& nums) { // complexity O(3*n)
+        vector <int> left(nums.size(),1);
+        vector <int> right(nums.size(),1);
+        vector <int> result(nums.size(),1);
+        
+        const int N = nums.size();
+
+        for(int i=0;i<N-1;++i){
+            left[i+1]=left[i]*nums[i];
         }
-        int product = std::accumulate(nums.begin(), nums.end(), 1, std::multiplies<int>());
-        vector <int> result (nums.size());
-        for(int i=0; i<nums.size(); i++){
-            result[i]=product/nums[i];
+        
+        for(int i=N-1;i>0;--i){
+            right[i-1]=right[i]*nums[i];
         }
-    return result;
+        
+        for(int i=0; i<N; ++i){
+            result[i]=right[i]*left[i];
+        }
+        
+        return result;
     }
 };
