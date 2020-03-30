@@ -1,27 +1,26 @@
-OVERFLOW SOLUTION
-
 class Solution {
 public:
-    void get_width(map <long long int,vector< long long int> > &mapsMe, TreeNode *root, long long int depth, long long int position){
-            mapsMe[depth].push_back(position);
-            if(root->left)
-                get_width(mapsMe,root->left,depth+1,2*position);
-            if(root->right)
-                get_width(mapsMe,root->right,depth+1,2*position+1);
-    }
-    
     int widthOfBinaryTree(TreeNode* root) {
-        map <long long int,vector<long long int>> mapping;
-        get_width(mapping,root,0,0);  
+        queue<pair<TreeNode*, int>> q;
+        q.push(make_pair(root, 1));
+        int result = 0;
         
-        long long int minVal=0, maxVal=0, maxDiff=-1;
-                
-        for(auto &i : mapping){
-            minVal=i.second[0];
-            maxVal=i.second.back();
-            maxDiff=max(maxDiff,maxVal-minVal);
+        while(!q.empty()) {
+            int queueSize=q.size();
+            if(queueSize == 1) // to avoid overflow
+                q.front().second = 1;
+            result = max(result, q.back().second - q.front().second+1);
+            while(queueSize){
+                auto current = q.front();
+                q.pop();
+                if(current.first->left)
+                    q.push(make_pair(current.first->left, 2*current.second-1));
+                if(current.first->right)
+                    q.push(make_pair(current.first->right, 2*current.second));
+                --queueSize;
+            }
+            
         }
-        
-        return maxDiff+1;
+        return result;
     }
 };
