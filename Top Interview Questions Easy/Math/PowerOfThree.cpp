@@ -1,13 +1,14 @@
 class Solution {
 public:
-    bool isPowerOfThree(int n) {
-        if(n<=0) return false;
-        
-        while(n>1){
-        if(n%3!=0)
+    bool isPowerOfTwo(int n) {
+        if(n<=0)
             return false;
-        n=n/3;           
-        }
-    return true;
+        
+        bitset<32> check (n);
+        
+        if(check.count()==1)
+            return true;
+        else
+            return false;
     }
 };
